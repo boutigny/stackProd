@@ -60,7 +60,7 @@ def main():
 
     # First get the list of available filters in the registry
     filterList = getFilterList(conn)
-    print("Fthe following filters are available in the registry: ",filterList)
+    print("The following filters are available in the registry: ",filterList)
 
     if filt != "all":
         if filt not in filterList:
