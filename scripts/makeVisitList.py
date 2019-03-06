@@ -21,7 +21,7 @@ def createConnection(dbFile):
 
 def createList(dbConn, filt):
     cur = dbConn.cursor()
-    cur.execute("SELECT visit from raw_visit WHERE filter='"+filt+"'")
+    cur.execute("SELECT visit from raw_visit WHERE filter like '"+filt+"_'")
     rows = cur.fetchall()
     list = [i[0] for i in rows]
     return list
