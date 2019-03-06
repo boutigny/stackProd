@@ -3,6 +3,7 @@
 Utility script to automatically create the lists of visits corresponding to
 a given filter (or to all of them) in a format suitable for the DM stack
 The list of visits is extracted from the registry database.
+The list of available filters is also created automatically.
 """
 
 import sys
