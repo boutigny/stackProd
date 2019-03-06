@@ -19,9 +19,16 @@ def createConnection(dbFile):
         sys.exit(e)
     return None
 
+def getFilterList(dbConn):
+    cur = dbConn.cursor()
+    cur.execute("SELECT DISTINCT filter from raw_visit")
+    rows = cur.fetchall()
+    list = [i[0] for i in rows]
+    return list
+
 def createList(dbConn, filt):
     cur = dbConn.cursor()
-    cur.execute("SELECT visit from raw_visit WHERE filter like '"+filt+"_'")
+    cur.execute("SELECT visit from raw_visit WHERE filter like '"+filt+"%'")
     rows = cur.fetchall()
     list = [i[0] for i in rows]
     return list
@@ -35,13 +42,11 @@ def createIdFile(visitList, fileName):
     return None
 
 def main():
-    filterList = ["u", "g", "r", "i", "z", "all"]
     parser = OptionParser(usage="usage: %prog [options] input",
                           version="%prog 1.0")
     parser.add_option("-F", "--filter",
-                        type="choice",
+                        type="string",
                         default="all",
-                        choices=filterList,
                         help="Filter [%default]")
     (opts, args) = parser.parse_args()
     if len(args) != 1:
@@ -52,11 +57,18 @@ def main():
 
     conn = createConnection(db)
 
+    # First get the list of available filters in the registry
+    filterList = getFilterList(conn)
+    print("Fthe following filters are available in the registry: ",filterList)
+
     if filt != "all":
+        if filt not in filterList:
+            print("filter %s not in registry"%filt)
+            exit(99)
         visitList = createList(conn, filt)
         createIdFile(visitList, filt + ".list")
     else:
-        for f in filterList[:-1]:
+        for f in filterList:
             visitList = createList(conn, f)
             createIdFile(visitList, f + ".list")
 
