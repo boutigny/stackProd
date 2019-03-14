@@ -1,0 +1,8 @@
+cd /pbs/throng/lsst/users/MOI/clusters/MACSJ2243.3-0935
+source setup.sh
+
+; first make the lists of visits
+./stackProd/scripts/makeVisitList.py input 
+
+; launch the prod of calexp 
+./stackProd/scripts/run_batch_all.py input --config "./stackProd/myProcessCcd_gaia_sdss.py" 
