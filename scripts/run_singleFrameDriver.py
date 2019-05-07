@@ -58,15 +58,16 @@ def createSubmit(visitList, toWrite, configFile, filt, clobber, rerun, launch) :
     if not os.path.isdir(dirLog) :
         os.makedirs(dirLog)
     log = dirLog + "/" + visitList + ".log"
-    print(log)
-    jobName = 'singleFrameDriver_' + filt
+    if os.path.isfile(log):
+        os.remove(log)
+    jobName = 'sglFrm_' + filt
     qsub = "qsub -N " + jobName + " -P P_lsst -q mc_long -pe multicores 8 -l sps=1 -j y -o "+ log + " <<EOF"
     scriptName = "scripts/" + filt + "/" + visitList + ".sh"
     script = open(scriptName,"w")
     script.write(qsub + "\n")
     script.write("#!/usr/local/bin/bash\n")
     script.write(" cd " + cwd + "\n")
-    script.write(" source setup.sh\n")
+    script.write(" source _parent/setup.sh\n")
     script.write(" " + cmd + "\n")
     script.write("EOF" + "\n")
     script.close()
