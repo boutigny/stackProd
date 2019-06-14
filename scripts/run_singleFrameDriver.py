@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parser.add_option("-F", "--filter", type="string", default="all", help="Filter [%default]")
     parser.add_option("-m", "--mod", type="int", default=10, help="Nbr. of visits per job [%default]")
     parser.add_option("-M", "--max", type="int", default=999, help="Max nbr of jobs to be submitted [%default]")
-    parser.add_option("-c", "--config", type="string", default="myProcessCcd.py", help="Configuration file [%default]")
+    parser.add_option("-c", "--config", type="string", default="singleFrameConfig.py", help="Configuration file [%default]")
     parser.add_option("-L", "--launch", action="store_true", help="Launch the jobs if set")
     parser.add_option("--clobber", action="store_true", help="Clobber everything if set")
     (opts, args) = parser.parse_args()
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     if not os.path.islink("_parent"):
         sys.exit('_parent link is missing')
 
-    #take the list from makeVisitList.py
+    # Get list of filters
     db = os.path.join('_parent','input','registry.sqlite3')
     conn = createConnection(db)
     # First get the list of available filters in the registry
